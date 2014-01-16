@@ -31,23 +31,15 @@ public abstract class Procedures {
 
     public abstract byte[] getSelectPrinter();
 
-    public abstract byte[] getSize0();
-
-    public abstract byte[] getSize1();
-
-    public abstract byte[] getSize2();
-
-    public abstract byte[] getSize3();
-
     public abstract byte[] getBoldSet();
 
     public abstract byte[] getBoldReset();
 
-    public abstract byte[] getSizeSet();
+   public abstract byte[] getSizeSet(Integer iCharacterSize);
 
     public abstract byte[] getSizeReset();
 
-    public abstract byte[] getUnderlineSet();
+    public abstract byte[] getUnderlineSet(String sUnderlineType);
 
     public abstract byte[] getUnderlineReset();
 

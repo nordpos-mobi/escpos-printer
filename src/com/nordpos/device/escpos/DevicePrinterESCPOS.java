@@ -1,27 +1,34 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2009 Openbravo, S.L.
-//    http://www.openbravo.com/product/pos
-//
-//    This file is part of Openbravo POS.
-//
-//    Openbravo POS is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    Openbravo POS is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-//
-//    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ *
+ * NORD POS is a fork of Openbravo POS.
+ *
+ * Copyright (C) 2009-2013 Nord Trading Ltd. <http://www.nordpos.com>
+ *
+ * This file is part of NORD POS.
+ *
+ * NORD POS is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * NORD POS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * NORD POS. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.nordpos.device.escpos;
 
 import com.nordpos.device.ticket.TicketPrinterException;
 import com.nordpos.device.receiptprinter.DevicePrinter;
 import com.nordpos.device.writter.Writter;
 
+/**
+ *
+ * @author Andrey Svininykh <svininykh@gmail.com>
+ * @version NORD POS 3.0
+ */
 public class DevicePrinterESCPOS implements DevicePrinter {
 
     private final Writter m_CommOutputPrinter;
@@ -38,8 +45,7 @@ public class DevicePrinterESCPOS implements DevicePrinter {
 
         m_CommOutputPrinter.init(printerProcedures.getInitSequence());
         m_CommOutputPrinter.write(printerProcedures.getSelectPrinter());
-//        m_CommOutputPrinter.init(m_codes.getInitSequence());
-//        m_CommOutputPrinter.write(m_trans.getCodeTable());
+        m_CommOutputPrinter.write(m_trans.getCodeTable());
 
         m_CommOutputPrinter.flush();
     }
@@ -54,7 +60,6 @@ public class DevicePrinterESCPOS implements DevicePrinter {
         return null;
     }
 
-
     @Override
     public void reset() {
     }
@@ -64,40 +69,42 @@ public class DevicePrinterESCPOS implements DevicePrinter {
     }
 
     @Override
-    public void beginLine(int iTextSize) {
-
+    public void beginLine(Integer iTextSize) {
         m_CommOutputPrinter.write(printerProcedures.getSelectPrinter());
-
-        if (iTextSize == DevicePrinter.SIZE_0) {
-            m_CommOutputPrinter.write(printerProcedures.getSize0());
-        } else if (iTextSize == DevicePrinter.SIZE_1) {
-            m_CommOutputPrinter.write(printerProcedures.getSize1());
-        } else if (iTextSize == DevicePrinter.SIZE_2) {
-            m_CommOutputPrinter.write(printerProcedures.getSize2());
-        } else if (iTextSize == DevicePrinter.SIZE_3) {
-            m_CommOutputPrinter.write(printerProcedures.getSize3());
-        } else {
-            m_CommOutputPrinter.write(printerProcedures.getSize0());
+        if (iTextSize != null) {
+            m_CommOutputPrinter.write(printerProcedures.getSizeSet(iTextSize));
         }
     }
 
     @Override
-    public void printText(int iStyle, String sText) {
+    public void printText(Integer iCharacterSize, String sUnderlineType, Boolean bBold, String sText) {
 
-        m_CommOutputPrinter.write(printerProcedures.getSelectPrinter());
+        if (iCharacterSize != null) {
+            m_CommOutputPrinter.write(printerProcedures.getSizeSet(iCharacterSize));
+        }
 
-        if ((iStyle & DevicePrinter.STYLE_BOLD) != 0) {
+        if (sUnderlineType != null) {
+            m_CommOutputPrinter.write(printerProcedures.getUnderlineSet(sUnderlineType));
+        }
+
+        if (bBold) {
             m_CommOutputPrinter.write(printerProcedures.getBoldSet());
+        } else {
+            m_CommOutputPrinter.write(printerProcedures.getBoldReset());
         }
-        if ((iStyle & DevicePrinter.STYLE_UNDERLINE) != 0) {
-            m_CommOutputPrinter.write(printerProcedures.getUnderlineSet());
-        }
+
         m_CommOutputPrinter.write(m_trans.transString(sText));
-        if ((iStyle & DevicePrinter.STYLE_UNDERLINE) != 0) {
+
+        if (bBold) {
+            m_CommOutputPrinter.write(printerProcedures.getBoldReset());
+        }
+
+        if (sUnderlineType != null) {
             m_CommOutputPrinter.write(printerProcedures.getUnderlineReset());
         }
-        if ((iStyle & DevicePrinter.STYLE_BOLD) != 0) {
-            m_CommOutputPrinter.write(printerProcedures.getBoldReset());
+
+        if (iCharacterSize != null) {
+            m_CommOutputPrinter.write(printerProcedures.getSizeReset());
         }
     }
 
@@ -120,5 +127,4 @@ public class DevicePrinterESCPOS implements DevicePrinter {
         m_CommOutputPrinter.write(printerProcedures.getCutReceipt());
         m_CommOutputPrinter.flush();
     }
-
 }
