@@ -20,15 +20,16 @@
 package com.nordpos.device.escpos;
 
 public class UnicodeTranslatorInt extends UnicodeTranslator {
-public static final byte[] CODE_TABLE_KANJI_RUS = {0x1C, 0x2E, 0x1B, 0x74, 0x11};
-    /** Creates a new instance of UnicodeTranslatorInt */
+
     public UnicodeTranslatorInt() {
     }
 
+    @Override
     public byte[] getCodeTable() {
-        return CODE_TABLE_KANJI_RUS;
+        return new byte[] {0x1B, 0x74, 0x00};
     }
 
+    @Override
     public final byte[] convertString(String sConvert) {
         byte bAux[] = new byte[sConvert.length()];
         for (int i = 0; i < sConvert.length(); i++) {
@@ -111,24 +112,7 @@ public static final byte[] CODE_TABLE_KANJI_RUS = {0x1C, 0x2E, 0x1B, 0x74, 0x11}
                 case '\u2510': return -0x41; // BOX DRAWINGS LIGHT DOWN AND LEFT
 
                 case '\u2514': return -0x40; // BOX DRAWINGS LIGHT UP ANDRIGHT
-//                case '': return -0x3F; //
-//                case '': return -0x3E; //
-//                case '': return -0x3D; //
-//                case '': return -0x3C; //
-//                case '': return -0x3B; //
-//                case '': return -0x3A; //
-//                case '': return -0x39; //
-//                case '': return -0x38; //
-//                case '': return -0x37; //
-//                case '': return -0x36; //
-//                case '': return -0x35; //
-//                case '': return -0x34; //
-//                case '': return -0x33; //
-//                case '': return -0x32; //
-//                case '': return -0x31; //
 
-//                case '': return -0x30; //
-//                case '': return -0x2F; //
                 case '\u00ca': return -0x2E; //
                 case '\u00cb': return -0x2D; //
                 case '\u00c8': return -0x2C; //
@@ -136,148 +120,23 @@ public static final byte[] CODE_TABLE_KANJI_RUS = {0x1C, 0x2E, 0x1B, 0x74, 0x11}
                 case '\u00cd': return -0x2A; // I acute
                 case '\u00ce': return -0x29; //
                 case '\u00cf': return -0x28; //
-//                case '': return -0x27; //
-//                case '': return -0x26; //
-//                case '': return -0x25; //
-//                case '': return -0x24; //
+
                 case '|': return -0x23; //
                 case '\u00cc': return -0x22; //
-//                case '': return -0x21; //
 
                 case '\u00d3': return -0x20; // O acute
-//                case '': return -0x1F; //
                 case '\u00d4': return -0x1E; //
                 case '\u00d2': return -0x1D; //
-//                case '': return -0x1C; //
-//                case '': return -0x1B; //
-//                case '': return -0x1A; //
-//                case '': return -0x19; //
-//                case '': return -0x18; //
                 case '\u00da': return -0x17; // U acute
                 case '\u00db': return -0x16; //
                 case '\u00d9': return -0x15; //
                 case '\u00fd': return -0x14; //
                 case '\u00dd': return -0x13; //
-//                case '': return -0x12; //
                 case '\u00b4': return -0x11; //
 
-//                case '': return -0x10; //
-//                case '': return -0x0F; //
-//                case '': return -0x0E; //
-//                case '': return -0x0D; //
-//                case '': return -0x0C; //
-//                case '': return -0x0B; //
-//                case '': return -0x0A; //
-//                case '': return -0x09; //
-//                case '': return -0x08; //
                 case '\u00a8': return -0x07; //
-//                case '': return -0x06; //
-//                case '': return -0x05; //
-//                case '': return -0x04; //
-//                case '': return -0x03; //
-//                case '': return -0x02; //
-                // case ' ': return -0x01; // SP
 
                 default: return 0x3F; // ? Not valid character.
-
-// Old translation
-//            case '\u00aa' : return (byte) 0xA6;
-//            case '\u00ba' : return (byte) 0xA7;
-//            case '\u00a1' : return (byte) 0xAD;
-//            case '\u00bf' : return (byte) 0xA8;
-//            case '\u00b7' : return (byte) 0xF9;
-//            case '\u00f1' : return (byte) 0xA4;
-//            case '\u00d1' : return (byte) 0xA5;
-//            case '\u00e1' : return (byte) 0xA0;
-//            case '\u00c1' : return (byte) 0x86;
-//            case '\u00e9' : return (byte) 0x82;
-//            case '\u00c9' : return (byte) 0x90;
-//            case '\u00ed' : return (byte) 0xA1;
-//            case '\u00cd' : return (byte) 0x8B;
-//            case '\u00f3' : return (byte) 0xA2;
-//            case '\u00d3' : return (byte) 0x9F;
-//            case '\u00fa' : return (byte) 0xA3;
-//            case '\u00da' : return (byte) 0x96;
-//            case '\u00fc' : return (byte) 0x81;
-//            case '\u00dc' : return (byte) 0x9A;
-//            default: return (byte) sChar;
-
-            // ru - Russian for 866 (Cyrillic) code page
-            case '\u0410': return (byte) 0x80;// A
-            case '\u0430': return (byte) 0x80;// a
-            case '\u0411': return (byte) 0x81;// Б
-            case '\u0412': return (byte) 0x82;// В
-            case '\u0413': return (byte) 0x83;// Г
-            case '\u0414': return (byte) 0x84;// Д
-            case '\u0434': return (byte) 0x84;// д
-            case '\u0415': return (byte) 0x85;// Е
-            case '\u0435': return (byte) 0x85;// е
-            case '\u0401': return (byte) 0xF0;// Ё
-            case '\u0416': return (byte) 0x86;// Ж
-            case '\u0417': return (byte) 0x87;// З
-            case '\u0418': return (byte) 0x88;// И
-            case '\u0419': return (byte) 0x89;// Й
-            case '\u0439': return (byte) 0x89;// й
-            case '\u041A': return (byte) 0x8A;// К
-            case '\u041B': return (byte) 0x8B;// Л
-            case '\u041C': return (byte) 0x8C;// М
-            case '\u041D': return (byte) 0x8D;// Н
-            case '\u043D': return (byte) 0x8D;// н
-            case '\u041E': return (byte) 0x8E;// О
-            case '\u041F': return (byte) 0x8F;// П
-            case '\u0420': return (byte) 0x90;// Р
-            case '\u0440': return (byte) 0x90;// р
-            case '\u0421': return (byte) 0x91;// С
-            case '\u0422': return (byte) 0x92;// Т
-            case '\u0423': return (byte) 0x93;// У
-            case '\u0424': return (byte) 0x94;// Ф
-            case '\u0425': return (byte) 0x95;// Х
-            case '\u0426': return (byte) 0x96;// Ц
-            case '\u0427': return (byte) 0x97;// Ч
-            case '\u0428': return (byte) 0xE8;// Ш
-            case '\u0429': return (byte) 0xE9;// Щ
-            case '\u042A': return (byte) 0x9A;// Ъ
-            case '\u042B': return (byte) 0x9B;// Ы
-            case '\u042C': return (byte) 0x9C;// Ь
-            case '\u042D': return (byte) 0x9D;// Э
-            case '\u042E': return (byte) 0x9E;// Ю
-            case '\u042F': return (byte) 0x9F;// Я
-
-            case '\u0431': return (byte) 0xA1;// б
-            case '\u0432': return (byte) 0xA2;// в
-            case '\u0433': return (byte) 0xA3;// г
-
-
-            case '\u0451': return (byte) 0xF1;// ё
-            case '\u0436': return (byte) 0xA6;// ж
-            case '\u0437': return (byte) 0xA7;// з
-            case '\u0438': return (byte) 0xA8;// и
-
-            case '\u043A': return (byte) 0xAA;// к
-            case '\u043B': return (byte) 0xAB;// л
-            case '\u043C': return (byte) 0xAC;// м
-
-            case '\u043E': return (byte) 0xAE;// о
-            case '\u043F': return (byte) 0xAF;// п
-
-            case '\u0441': return (byte) 0xE1;// с
-            case '\u0442': return (byte) 0xE2;// т
-            case '\u0443': return (byte) 0xE3;// у
-            case '\u0444': return (byte) 0xE4;// ф
-            case '\u0445': return (byte) 0xE5;// х
-            case '\u0446': return (byte) 0xE6;// ц
-            case '\u0447': return (byte) 0xE7;// ч
-            case '\u0448': return (byte) 0xE8;// ш
-            case '\u0449': return (byte) 0xE9;// щ
-            case '\u044A': return (byte) 0xEC;// ъ
-            case '\u044B': return (byte) 0xEB;// ы
-            case '\u044C': return (byte) 0xEA;// ь
-            case '\u044D': return (byte) 0xED;// э
-            case '\u044E': return (byte) 0xEE;// ю
-            case '\u044F': return (byte) 0xEF;// я
-
-            case '\u00A0': return (byte) 0x7F;// &nbsp
-            case '\u2116': return (byte) 0xFC;// №
             }
         }
     }
