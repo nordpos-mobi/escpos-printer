@@ -20,6 +20,7 @@
  */
 package com.nordpos.device.escpos;
 
+import com.nordpos.device.traslator.UnicodeTranslator;
 import com.nordpos.device.ticket.TicketPrinterException;
 import com.nordpos.device.receiptprinter.DevicePrinter;
 import com.nordpos.device.writter.Writter;

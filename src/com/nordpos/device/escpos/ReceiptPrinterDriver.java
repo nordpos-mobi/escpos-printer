@@ -20,6 +20,7 @@
  */
 package com.nordpos.device.escpos;
 
+import com.nordpos.device.traslator.UnicodeTranslatorInt;
 import com.nordpos.device.receiptprinter.DevicePrinter;
 import com.nordpos.device.receiptprinter.DevicePrinterNull;
 import com.nordpos.device.ReceiptPrinterInterface;
@@ -53,7 +54,9 @@ public class ReceiptPrinterDriver implements ReceiptPrinterInterface {
                     iPrinterSerialPortDataBits = SerialPortParameters.getDataBits(sp.nextToken(','));
                     iPrinterSerialPortStopBits = SerialPortParameters.getStopBits(sp.nextToken(','));
                     iPrinterSerialPortParity = SerialPortParameters.getParity(sp.nextToken(','));
-                    return new DevicePrinterESCPOS(new WritterRXTX(sPrinterParam2, iPrinterSerialPortSpeed, iPrinterSerialPortDataBits, iPrinterSerialPortStopBits, iPrinterSerialPortParity), new CommandsEpsonPrinter(), new UnicodeTranslatorInt());
+                    UnicodeTranslatorInt traslator = new UnicodeTranslatorInt();
+                    traslator.setCodeTable(new byte[]{0x1B, 0x74, 0x01});
+                    return new DevicePrinterESCPOS(new WritterRXTX(sPrinterParam2, iPrinterSerialPortSpeed, iPrinterSerialPortDataBits, iPrinterSerialPortStopBits, iPrinterSerialPortParity), new CommandsEpsonPrinter(), traslator);
                 } else {
                     return new DevicePrinterESCPOS(new WritterFile(sPrinterParam2), new CommandsEpsonPrinter(), new UnicodeTranslatorInt());
                 }
